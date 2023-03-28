@@ -15,10 +15,18 @@ inputEl.addEventListener('input', debounce(onSearch, DEBOUNCE_DELAY));
 function onSearch() {
   const searchCountry = inputEl.value.trim();
 
+  if(searchCountry === '' || searchCountry.includes(' ')){
+    listEl.innerHTML = '';
+    divEl.innerHTML = '';
+return;
+  }
+
   fetchCountries(searchCountry)
     .then(countries => renderMarkup(countries))
     .catch(error => {
       console.log(error);
+      listEl.innerHTML = '';
+    divEl.innerHTML = '';
       Notiflix.Notify.failure('Oops, there is no country with that name');
     });
 }
@@ -64,6 +72,8 @@ function renderMarkup(countries) {
     listEl.innerHTML = markup;
     divEl.innerHTML = '';
   } else {
+    listEl.innerHTML = '';
+    divEl.innerHTML = '';
     Notiflix.Notify.info(
       'Too many matches found. Please enter a more specific name.'
     );
